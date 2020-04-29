@@ -58,6 +58,7 @@ def emailFunction():
     subject = listenAndReturn()
     speak("body?")
     body = listenAndReturn()
+    speak("Sending email, please wait")
     try:
         sendemail(from_addr    = from_addr, 
             to_addr = to_addr,
@@ -76,24 +77,30 @@ def currencyFunction(query):
     from_country = query[(query.index('to') - 4) : (query.index('to') - 1)]
     to_country = query[(query.index('to')) + 3 : ]
     a = convert(value, from_country.upper(), to_country.upper())
-    if a=="Error":
+    if a=="Error" or a=="Could not convert!":
         speak("There was a problem converting the currency")
     else:
-        speak("It is equal to " + a + " indian rupees")
+        speak("It is equal to " + a + query[-3:])
 
 def speak(s):
     print(s)
-    system("say " + s)
+    system("say -v 'Karen' " + s)
 
 def jarvis(query):
     tokens = word_tokenize(query)
     stop_words = set(stopwords.words('english'))
     clean_tokens = [w for w in tokens if not w in stop_words]
+    print(clean_tokens)
+    if ("what is" in query.lower() or "what's" in query.lower()) or "your name" in query.lower():
+        speak("My name is Karen")
 
-    if query.lower() == "what is your name":
-        speak("My name is Jarvis")
-    elif "I" and "send" and "email" in clean_tokens:
+    # send email
+    elif "I" in clean_tokens and "send" in clean_tokens and "email" in clean_tokens:
         emailFunction()
+
+    elif ("your" in tokens or "you" in tokens) and "creator" in tokens:
+        speak("My creator is Mohammed Mehdi, a 20 year old code freak.")
+    
     elif 'convert' in query.lower():
         currencyFunction(query.lower())
     
@@ -155,13 +162,9 @@ def jarvis(query):
             population = country_feature.returnPopulation(countryAlphaCode)
             speak("The population of " + country + " is " + str(population))
         except:
-            speak("Sorry, i dont know")        
+            speak("Sorry, i dont know") 
 
-    elif query.lower() == "what is the capital of uae" or query.lower() in "capital of uae":
-        speak("The capital of UAE is Abu Dhabi")
-    elif query.lower() == "what is the capital of india" or query.lower() in "capital of india":
-        speak("The capital of India is New Delhi")
-    elif query.lower() in "what is the time":
+    elif "what" and "time" in query.lower():
         speak("It is " + getLocalTime())
     
     # give meaning of a word
@@ -171,6 +174,10 @@ def jarvis(query):
 
     elif 'close' and 'application' in word_tokenize(query):
         speak("Closing application, please wait")
+        quit()
+    
+    elif 'goodbye' in query or 'bye' in query:
+        speak("Goodbye")
         quit()
 
     else:
@@ -196,7 +203,7 @@ while True:
 
     except sr.UnknownValueError:
         print("Sorry, Could not understand you")
-        system("say Sorry, Could not understand you")
+        system("say -v Karen Sorry, Could not understand you")
     except sr.RequestError as e:
         print("Sorry, Could not understand you")
-        system("say Sorry, Could not understand you")
+        system("say -v Karen Sorry, Could not understand you")

@@ -1,0 +1,13 @@
+certifi==2020.4.5.1
+chardet==3.0.4
+future==0.18.2
+idna==2.8
+nltk==3.4.5
+numpy==1.18.3
+Pillow==7.1.1
+PyAudio==0.2.11
+requests==2.22.0
+simpleaudio==1.0.2
+six==1.14.0
+SpeechRecognition==3.8.1
+urllib3==1.25.8
