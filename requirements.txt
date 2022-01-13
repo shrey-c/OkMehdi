@@ -4,7 +4,7 @@ future==0.18.2
 idna==2.8
 nltk==3.4.5
 numpy==1.18.3
-Pillow==7.1.1
+Pillow==9.0.0
 PyAudio==0.2.11
 requests==2.22.0
 simpleaudio==1.0.2
